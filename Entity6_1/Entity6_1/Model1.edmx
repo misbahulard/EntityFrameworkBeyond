@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Events" EntityType="Model1.Store.Events" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Organizers" EntityType="Model1.Store.Organizers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EventOrganizer" EntityType="Model1.Store.EventOrganizer" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_EventOrganizer_Event" Association="Model1.Store.FK_EventOrganizer_Event">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="EventOrganizer" EntitySet="EventOrganizer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EventOrganizer_Organizer" Association="Model1.Store.FK_EventOrganizer_Organizer">
+      <End Role="Organizer" EntitySet="Organizers" />
+      <End Role="EventOrganizer" EntitySet="EventOrganizer" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Events">
+    <Key>
+      <PropertyRef Name="EventId" />
+    </Key>
+    <Property Name="EventId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Organizers">
+    <Key>
+      <PropertyRef Name="OrganizerId" />
+    </Key>
+    <Property Name="OrganizerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EventOrganizer">
+    <Key>
+      <PropertyRef Name="Events_EventId" />
+      <PropertyRef Name="Organizers_OrganizerId" />
+    </Key>
+    <Property Name="Events_EventId" Type="int" Nullable="false" />
+    <Property Name="Organizers_OrganizerId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_EventOrganizer_Event">
+    <End Role="Event" Type="Model1.Store.Events" Multiplicity="1" />
+    <End Role="EventOrganizer" Type="Model1.Store.EventOrganizer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="EventId" />
+      </Principal>
+      <Dependent Role="EventOrganizer">
+        <PropertyRef Name="Events_EventId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EventOrganizer_Organizer">
+    <End Role="EventOrganizer" Type="Model1.Store.EventOrganizer" Multiplicity="*" />
+    <End Role="Organizer" Type="Model1.Store.Organizers" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Organizer">
+        <PropertyRef Name="OrganizerId" />
+      </Principal>
+      <Dependent Role="EventOrganizer">
+        <PropertyRef Name="Organizers_OrganizerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Events" EntityType="Model1.Event" />
+          <EntitySet Name="Organizers" EntityType="Model1.Organizer" />
+          <AssociationSet Name="EventOrganizer" Association="Model1.EventOrganizer">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Organizer" EntitySet="Organizers" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="EventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Organizers" Relationship="Model1.EventOrganizer" FromRole="Event" ToRole="Organizer" />
+        </EntityType>
+        <EntityType Name="Organizer">
+          <Key>
+            <PropertyRef Name="OrganizerId" />
+          </Key>
+          <Property Name="OrganizerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Events" Relationship="Model1.EventOrganizer" FromRole="Organizer" ToRole="Event" />
+        </EntityType>
+        <Association Name="EventOrganizer">
+          <End Type="Model1.Event" Role="Event" Multiplicity="*" />
+          <End Type="Model1.Organizer" Role="Organizer" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Events">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Event)">
+        <MappingFragment StoreEntitySet="Events">
+          <ScalarProperty Name="EventId" ColumnName="EventId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Organizers">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Organizer)">
+        <MappingFragment StoreEntitySet="Organizers">
+          <ScalarProperty Name="OrganizerId" ColumnName="OrganizerId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="EventOrganizer" TypeName="Model1.EventOrganizer" StoreEntitySet="EventOrganizer">
+      <EndProperty Name="Event">
+        <ScalarProperty Name="EventId" ColumnName="Events_EventId" />
+      </EndProperty>
+      <EndProperty Name="Organizer">
+        <ScalarProperty Name="OrganizerId" ColumnName="Organizers_OrganizerId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

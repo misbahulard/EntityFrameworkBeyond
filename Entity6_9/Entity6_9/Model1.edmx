@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Toys" EntityType="Model1.Store.Toys" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Toys_RefurbishedToy" EntityType="Model1.Store.Toys_RefurbishedToy" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_RefurbishedToy_inherits_Toy" Association="Model1.Store.FK_RefurbishedToy_inherits_Toy">
+      <End Role="Toy" EntitySet="Toys" />
+      <End Role="RefurbishedToy" EntitySet="Toys_RefurbishedToy" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Toys">
+    <Key>
+      <PropertyRef Name="ToyId" />
+    </Key>
+    <Property Name="ToyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Toys_RefurbishedToy">
+    <Key>
+      <PropertyRef Name="ToyId" />
+    </Key>
+    <Property Name="Quality" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="ToyId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_RefurbishedToy_inherits_Toy">
+    <End Role="Toy" Type="Model1.Store.Toys" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="RefurbishedToy" Type="Model1.Store.Toys_RefurbishedToy" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Toy">
+        <PropertyRef Name="ToyId" />
+      </Principal>
+      <Dependent Role="RefurbishedToy">
+        <PropertyRef Name="ToyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Toys" EntityType="Model1.Toy" />
+        </EntityContainer>
+        <EntityType Name="Toy">
+          <Key>
+            <PropertyRef Name="ToyId" />
+          </Key>
+          <Property Name="ToyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Price" Type="Decimal" />
+        </EntityType>
+        <EntityType Name="RefurbishedToy" BaseType="Model1.Toy">
+          <Property Name="Quality" Type="String" annotation:StoreGeneratedPattern="None" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Toys">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Toy)">
+        <MappingFragment StoreEntitySet="Toys">
+          <ScalarProperty Name="ToyId" ColumnName="ToyId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.RefurbishedToy)">
+        <MappingFragment StoreEntitySet="Toys_RefurbishedToy">
+          <ScalarProperty Name="ToyId" ColumnName="ToyId" />
+          <ScalarProperty Name="Quality" ColumnName="Quality" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

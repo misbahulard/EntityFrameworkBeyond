@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Staffs" EntityType="Model1.Store.Staffs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Staffs_Instructor" EntityType="Model1.Store.Staffs_Instructor" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Staffs_Principal" EntityType="Model1.Store.Staffs_Principal" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Instructor_inherits_Staff" Association="Model1.Store.FK_Instructor_inherits_Staff">
+      <End Role="Staff" EntitySet="Staffs" />
+      <End Role="Instructor" EntitySet="Staffs_Instructor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Principal_inherits_Staff" Association="Model1.Store.FK_Principal_inherits_Staff">
+      <End Role="Staff" EntitySet="Staffs" />
+      <End Role="Principal" EntitySet="Staffs_Principal" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Staffs">
+    <Key>
+      <PropertyRef Name="StaffId" />
+    </Key>
+    <Property Name="StaffId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Staffs_Instructor">
+    <Key>
+      <PropertyRef Name="StaffId" />
+    </Key>
+    <Property Name="InstructorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Salary" Type="decimal" Nullable="true" />
+    <Property Name="StaffId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Staffs_Principal">
+    <Key>
+      <PropertyRef Name="StaffId" />
+    </Key>
+    <Property Name="PrincipalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Salary" Type="decimal" Nullable="true" />
+    <Property Name="Bonus" Type="decimal" Nullable="true" />
+    <Property Name="StaffId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Instructor_inherits_Staff">
+    <End Role="Staff" Type="Model1.Store.Staffs" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Instructor" Type="Model1.Store.Staffs_Instructor" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Staff">
+        <PropertyRef Name="StaffId" />
+      </Principal>
+      <Dependent Role="Instructor">
+        <PropertyRef Name="StaffId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Principal_inherits_Staff">
+    <End Role="Staff" Type="Model1.Store.Staffs" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Principal" Type="Model1.Store.Staffs_Principal" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Staff">
+        <PropertyRef Name="StaffId" />
+      </Principal>
+      <Dependent Role="Principal">
+        <PropertyRef Name="StaffId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Staffs" EntityType="Model1.Staff" />
+          <FunctionImport Name="DeleteInstructor">
+          <Parameter Name="StaffId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeletePrincipal">
+          <Parameter Name="StaffId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertInstructor" ReturnType="Collection(Model1.InsertInstructor_Result)">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Salary" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="InsertPrincipal" ReturnType="Collection(Model1.InsertPrincipal_Result)">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Salary" Mode="In" Type="Decimal" />
+            <Parameter Name="Bonus" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateInstructor">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Salary" Mode="In" Type="Decimal" />
+            <Parameter Name="StaffId" Mode="In" Type="Int32" />
+            <Parameter Name="InstructorId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdatePrincipal">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Salary" Mode="In" Type="Decimal" />
+            <Parameter Name="Bonus" Mode="In" Type="Decimal" />
+            <Parameter Name="StaffId" Mode="In" Type="Int32" />
+            <Parameter Name="PrincipalId" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="StaffId" />
+          </Key>
+          <Property Name="StaffId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Instructor" BaseType="Model1.Staff">
+          <Property Name="InstructorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Salary" Type="Decimal" />
+        </EntityType>
+        <EntityType Name="Principal" BaseType="Model1.Staff">
+          <Property Name="PrincipalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Salary" Type="Decimal" />
+          <Property Name="Bonus" Type="Decimal" />
+        </EntityType>
+        <ComplexType Name="InsertInstructor_Result">
+          <Property Type="Int32" Name="StaffId" Nullable="true" />
+          <Property Type="Decimal" Name="InstructorId" Nullable="true" Precision="38" Scale="0" />
+        </ComplexType>
+        <ComplexType Name="InsertPrincipal_Result">
+          <Property Type="Int32" Name="StaffId" Nullable="true" />
+          <Property Type="Decimal" Name="PrincipalId" Nullable="true" Precision="38" Scale="0" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Staffs">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Staff)">
+        <MappingFragment StoreEntitySet="Staffs">
+          <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Instructor)">
+        <MappingFragment StoreEntitySet="Staffs_Instructor">
+          <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+          <ScalarProperty Name="InstructorId" ColumnName="InstructorId" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Principal)">
+        <MappingFragment StoreEntitySet="Staffs_Principal">
+          <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+          <ScalarProperty Name="PrincipalId" ColumnName="PrincipalId" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+          <ScalarProperty Name="Bonus" ColumnName="Bonus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
